@@ -36,4 +36,12 @@ export default class Gamepad {
     if (!this.gamepad) return false;
     return this.gamepad.buttons[LOCK].pressed;
   }
+
+  get moving() {
+    return Math.abs(this.x) || Math.abs(this.z);
+  }
+
+  get angle() {
+    return Math.angle(this.x, this.z);
+  }
 }

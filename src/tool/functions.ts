@@ -5,6 +5,7 @@ import {
   Vector3,
 } from "@dimforge/rapier3d-compat";
 import Physic from "../engine/physic";
+import { AnimationClip } from "three";
 
 export function getCanvas() {
   const canvas = document.getElementsByTagName("canvas")[0];
@@ -50,23 +51,31 @@ export function createRigidBodyEntity(
   return { rigidBody, collider };
 }
 
-// export function createCollider(mesh: THREE.Mesh, physic: typeof Physic) {
-//   const geo = mesh.geometry;
-//   const vertices = new Float32Array(geo.attributes.position.array);
-//   const indices = new Uint32Array(geo.index!.array);
-//   const colliderDesc = ColliderDesc.trimesh(vertices, indices);
-//   return physic.createCollider(colliderDesc);
-// }
-
-// export function createRigidBody(position: Vector3, physic: typeof Physic) {
-//   const rigidBodyDesc = RigidBodyDesc.dynamic();
-//   rigidBodyDesc.setTranslation(position.x, position.y, position.z);
-//   const rigidBody = physic.createRigidBody(rigidBodyDesc);
-//   const colliderDesc = ColliderDesc.ball(0.25);
-//   const collider = physic.createCollider(colliderDesc, rigidBody);
-//   return { rigidBody, collider };
-// }
-
 export function floor(float: number, max = 0.2) {
   return Math.abs(float) < max ? 0 : float;
+}
+
+export function findByName(name: string, list: AnimationClip[]) {
+  return list.find((a) => name === a.name);
+}
+
+export function browse(
+  object: THREE.Mesh,
+  callback: (obj: THREE.Mesh) => void
+) {
+  if (object.isMesh) callback(object);
+  const children = object.children;
+  for (let i = 0; i < children.length; i++) {
+    browse(children[i] as THREE.Mesh, callback);
+  }
+}
+
+Math.angle = function angle(x, z) {
+  return Math.atan2(-z, x) + Math.PI / 2;
+};
+
+export function range(angle1: number, angle2: number) {
+  let angle = ((angle1 - angle2 + Math.PI) % (Math.PI * 2)) - Math.PI;
+  angle < -Math.PI ? angle + Math.PI * 2 : angle;
+  return angle;
 }

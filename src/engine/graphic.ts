@@ -15,6 +15,7 @@ export default class Graphic extends WebGLRenderer {
     this.camera = camera;
     this.cbLoop = this.loop.bind(this);
     this.shadowMap.enabled = true;
+    window.addEventListener("resize", this.resize.bind(this), false);
     this.loop();
   }
 
@@ -27,5 +28,11 @@ export default class Graphic extends WebGLRenderer {
 
   onUpdate(callback: (dt: number) => void) {
     this.cbUpdate = callback;
+  }
+
+  resize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.setSize(window.innerWidth, window.innerHeight);
   }
 }
