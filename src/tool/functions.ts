@@ -79,3 +79,24 @@ export function range(angle1: number, angle2: number) {
   angle < -Math.PI ? angle + Math.PI * 2 : angle;
   return angle;
 }
+
+const reg = /\[(.*?)\]/;
+export function getSrc(src: string) {
+  const match = src.match(reg);
+  if (match !== null) {
+    const range = match[1].split("-");
+    const iBegin = parseInt(range[0], 10);
+    const iEnd = parseInt(range[1], 10);
+    const size = iEnd - iBegin + 1;
+    const source = src.split("[")[0];
+    const ext = src.split("]")[1];
+    return new Array(size)
+      .fill(null)
+      .map((_, i) => source + (i + iBegin) + ext);
+  }
+  return [src];
+}
+
+export function randomInt(range = 1) {
+  return Math.floor(Math.random() * range);
+}

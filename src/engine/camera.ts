@@ -3,7 +3,7 @@ import Player from "../entity/player";
 
 export default class Camera extends PerspectiveCamera {
   constructor() {
-    super(70, innerWidth / innerHeight);
+    super(40, innerWidth / innerHeight);
     this.position.set(0, 5.4, 9);
     this.lookAt(0, 0, 1.8);
   }
@@ -11,6 +11,6 @@ export default class Camera extends PerspectiveCamera {
   update(player: Player) {
     this.position.copy(player.position);
     this.position.y += 4;
-    this.position.z += 4;
+    this.position.z += 3.8;
   }
 }
